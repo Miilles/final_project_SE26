@@ -23,6 +23,18 @@ class GameView(arcade.View):
         #creates snakes, no clue if the coords are what we want them to be or not yet though
         self.snake1 = snake.Snake(start_position=(5, 4))
         self.snake2 = snake.Snake(start_position=(15, 4), direction=(-1, 0))
+        
+        #vars for snake points, for now assuming 2
+        self.snake1_points = 0
+        self.snake2_points = 0
+
+        self.player_count = 2
+
+        #im going to figure out a way to declare number of players, but this is the generic case
+        if self.playercount == 2:
+            self.score_snake1 = arcade.Text(f"Sore: {self.snake1_points}", x=-10, y = 10)
+            self.score_snake2 = arcade.Text(f"Sore: {self.snake2_points}", x=10, y = 10)
+
 
         self.scene = None
 
@@ -68,10 +80,42 @@ class GameView(arcade.View):
     def on_draw(self):
         """Render the screen."""
         self.clear()
+
+        #draw the score text, need to move this around
+        self.score.draw()
+        
         self.scene.draw()
 
 
+    def on_update(self, delta_time):
 
+
+        #note this only works for an individual case, we need to check this for each snake
+        #in the instance we have multiple, but this is the basics for now
+
+        #check for collisions w/ any walls in the list, as well as with opponent
+        collision_list_snake1 = arcade.check_for_collision_with_list(self.snake1, self.wall_list)
+        collision_list_snake1 = arcade.check_for_collision_with_list(self.snake1, self.snake2)
+
+        collision_list_snake2 = arcade.check_for_collision_with_list(self.snake2 self.wall_list)
+        collision_list_snake2 = arcade.check_for_collision_with_list(self.snake2 self.snake1)
+
+
+        #add points to relevent var and change round to over
+        if any() in collision_list_snake1: 
+            snake2_points += 1
+            round_over += 1
+
+        if any() in collision_list_snake2: 
+            snake1_points += 1
+            round_over += 1
+
+
+        if round_over != 0:
+            self.setup()
+
+
+        
 
 
 
